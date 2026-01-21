@@ -1,27 +1,8 @@
-# Build stage
-FROM golang:1.24-alpine AS builder
-
+FROM python:3.10-slim
 WORKDIR /app
-
-# Copy go mod and sum files
-COPY go.mod go.sum* ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy the source code
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-
-# Build the application
-RUN go build -o vault-service main.go
-
-# Final stage
-FROM alpine:latest
-
-WORKDIR /root/
-
-# Copy the binary from the builder stage
-COPY --from=builder /app/vault-service .
-
-# Command to run the executable
-CMD ["./vault-service"]
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+CMD ["python", "main.py"]

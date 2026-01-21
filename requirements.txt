@@ -3,3 +3,5 @@ boto3>=1.26.0
 moto[s3,all]>=4.1.0
 mongomock>=4.1.2
 responses>=0.23.0
+requests>=2.31.0
+pymongo>=4.3.0
